@@ -77,12 +77,24 @@ class MainActivity : AppCompatActivity() {
     // Cлушатель нажатия на кнопки операций
     fun eventButtonOperation(view: View) {
         if(view is Button){
+            if (view.text == "-" && editTextInput.text.toString() == "" && activeOperation== "" ){
+                editTextInput.append("-");
+                return Unit
+            }
+            if(view.text == "-" && editTextInput.text.toString() == "" && activeOperation != ""){
+                editTextInput.append("-");
+                return Unit
+            }
             checkOper(view.text.toString()) // Проверяем корректность операции
             operationView.text = activeOperation
         }
     }
 
-    private fun checkOper(textOperation:String){
+    private fun checkOper(textOperation:String) {
+        if (editTextInput.text.toString() == "" && activeOperation == "-"){
+            editTextInput.append(activeOperation)
+            return Unit
+    }
         
         if(editTextInput.text.toString() == "" && activeOperation== ""){
             showError("Введите сначала число")
