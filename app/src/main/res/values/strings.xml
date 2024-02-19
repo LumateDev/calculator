@@ -20,8 +20,7 @@
     <string name="buttonEqualsText">=</string>
     <string name="buttonMinusText">-</string>
     <string name="buttonMultipleText">*</string>
-    <string name="editTextInputHint">Please type here your expression</string>
-    <string name="textViewNumberText">Number</string>
-    <string name="textViewOperationText">Operation</string>
+    <string name="editTextInputHint">Введите ваше выражение</string>
+
 
 </resources>

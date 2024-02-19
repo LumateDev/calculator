@@ -15,8 +15,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonClear: Button
     private lateinit var buttonDelete: Button
 
-    private var activeNumber: String = ""
-    private var prevActiveNumber : String = " "
+    private var activeNumber: String = "" // 2 число
+    private var prevActiveNumber : String = " " // 1 число
     private var activeOperation: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,8 +60,14 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun buttonResult(view: View) {
+
         if((view is Button) && (prevActiveNumber != "") && (activeOperation != "")){
-            if (editTextInput.text.toString().startsWith("." ) ||editTextInput.text.toString().startsWith("-." ) )
+
+            if(editTextInput.text.toString() == "-" )
+
+                showError("Вы не ввели второе число")
+
+            else if (editTextInput.text.toString().startsWith("." ) ||editTextInput.text.toString().startsWith("-." ) )
                 showError("Число не может начинаться с точки")
             else{
                 activeNumber = editTextInput.text.toString()
@@ -82,6 +88,8 @@ class MainActivity : AppCompatActivity() {
     // Cлушатель нажатия на кнопки операций
     fun eventButtonOperation(view: View) {
         if(view is Button){
+
+
             if (view.text == "-" && editTextInput.text.toString() == "" && activeOperation== "" ){
                 editTextInput.append("-");
                 return Unit
@@ -140,13 +148,6 @@ class MainActivity : AppCompatActivity() {
 
         }
     }
-//    private fun checkNumber(textNumber: String): String {
-//        if (textNumber.startsWith(".")) {
-//            showError("Число не может начинаться с .")
-//            return ""
-//        }
-//        return textNumber
-//    }
 
     private fun showError(message:String){
         editTextInput.error = message
@@ -160,8 +161,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun calculate(){
 
-//        if(activeNumber == "")
-//            showError("11111")
+
         prevActiveNumber = when(activeOperation){
             "+" -> { (prevActiveNumber.toDouble() + activeNumber.toDouble()).toString() }
             "-" -> { (prevActiveNumber.toDouble() - activeNumber.toDouble()).toString() }
