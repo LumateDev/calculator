@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             if(activeOperation != ""){
                 activeOperation = ""
                 restart()
-                prevActiveNumber = ""; numberView.text = "" // сложно
+                prevActiveNumber = ""; numberView.text = ""
                 return@setOnClickListener
             }
             if(prevActiveNumber != ""){
@@ -61,11 +61,16 @@ class MainActivity : AppCompatActivity() {
     }
     fun buttonResult(view: View) {
         if((view is Button) && (prevActiveNumber != "") && (activeOperation != "")){
-            activeNumber = checkNumber(editTextInput.text.toString())
-            calculate()
-            activeOperation = ""
-            restart()
-            operationView.text = ""
+            if (editTextInput.text.toString().startsWith("." ) ||editTextInput.text.toString().startsWith("-." ) )
+                showError("Число не может начинаться с точки")
+            else{
+                activeNumber = editTextInput.text.toString()
+                calculate()
+                activeOperation = ""
+                restart()
+                operationView.text = ""
+            }
+
         }
     }
 
@@ -89,6 +94,12 @@ class MainActivity : AppCompatActivity() {
             operationView.text = activeOperation
         }
     }
+    fun returnNumber (view: View){
+        if (view is TextView){
+            if(view.text != "")
+                editTextInput.append(view.text.toString())
+        }
+    }
 
     private fun checkOper(textOperation:String) {
         if (editTextInput.text.toString() == "" && activeOperation == "-"){
@@ -105,25 +116,37 @@ class MainActivity : AppCompatActivity() {
             return Unit
         }
         if(activeOperation == ""){
-            prevActiveNumber = checkNumber(editTextInput.text.toString())
-            numberView.text = prevActiveNumber
-            activeOperation = textOperation
-            editTextInput.text.clear()
+            if (editTextInput.text.toString().startsWith("." ) ||editTextInput.text.toString().startsWith("-." ) )
+                showError("Число не может начинаться с точки")
+
+            else{
+                prevActiveNumber = editTextInput.text.toString()
+                numberView.text = prevActiveNumber
+                activeOperation = textOperation
+                editTextInput.text.clear()
+            }
+
         }
         else if(prevActiveNumber != ""){
-            activeNumber = checkNumber(editTextInput.text.toString())
-            calculate()
-            editTextInput.text.clear()
-            activeOperation = textOperation
+            if (editTextInput.text.toString().startsWith("." ) ||editTextInput.text.toString().startsWith("-." ) )
+                showError("Число не может начинаться с точки")
+            else{
+                activeNumber = editTextInput.text.toString()
+                calculate()
+                editTextInput.text.clear()
+                activeOperation = textOperation
+            }
+
+
         }
     }
-    private fun checkNumber(textNumber:String):String{
-        if(textNumber[0] == '.')
-            return "0".plus(textNumber)
-        if(textNumber[textNumber.length-1] == '.')
-            return textNumber.plus('0')
-        return textNumber
-    }
+//    private fun checkNumber(textNumber: String): String {
+//        if (textNumber.startsWith(".")) {
+//            showError("Число не может начинаться с .")
+//            return ""
+//        }
+//        return textNumber
+//    }
 
     private fun showError(message:String){
         editTextInput.error = message
@@ -137,8 +160,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun calculate(){
 
-        if(activeNumber == "")
-            showError("11111")
+//        if(activeNumber == "")
+//            showError("11111")
         prevActiveNumber = when(activeOperation){
             "+" -> { (prevActiveNumber.toDouble() + activeNumber.toDouble()).toString() }
             "-" -> { (prevActiveNumber.toDouble() - activeNumber.toDouble()).toString() }

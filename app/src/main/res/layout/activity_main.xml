@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.79" />
+        app:layout_constraintGuide_percent="0.76" />
 
     <Button
         android:id="@+id/buttonClear"
@@ -425,9 +425,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/textViewNumberText"
+        android:minHeight="48dp"
+        android:onClick="returnNumber"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -436,9 +437,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="@string/textViewOperationText"
+        android:layout_marginBottom="12dp"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextInput"
         app:layout_constraintEnd_toEndOf="@+id/textViewNumber"
         app:layout_constraintTop_toBottomOf="@+id/textViewNumber" />
 
@@ -447,5 +449,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.87" />
 </androidx.constraintlayout.widget.ConstraintLayout>
