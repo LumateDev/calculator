@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Calculator</string>
+    <string name="textViewNumber">Number</string>
+    <string name="textViewOperation">Operation</string>
+    <string name="button0Text">0</string>
+    <string name="button1Text">1</string>
+    <string name="button2Text">2</string>
+    <string name="button3Text">3</string>
+    <string name="button4Text">4</string>
+    <string name="button5Text">5</string>
+    <string name="button6Text">6</string>
+    <string name="button7Text">7</string>
+    <string name="button8Text">8</string>
+    <string name="button9Text">9</string>
+    <string name="buttonAddText">+</string>
+    <string name="buttonClearText">C</string>
+    <string name="buttonDeleteText">Del</string>
+    <string name="buttonDivisionText">/</string>
+    <string name="buttonDotText">.</string>
+    <string name="buttonEqualsText">=</string>
+    <string name="buttonMinusText">-</string>
+    <string name="buttonMultipleText">*</string>
+    <string name="editTextInputHint">Please type here your expression</string>
+    <string name="textViewNumberText">Number</string>
+    <string name="textViewOperationText">Operation</string>
+
+</resources>
