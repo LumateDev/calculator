@@ -15,8 +15,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var buttonClear: Button
     private lateinit var buttonDelete: Button
 
-    private var activeNumber: String = "" // 2 число
-    private var prevActiveNumber : String = " " // 1 число
+    private var activeNumber: String = ""
+    private var prevActiveNumber : String = " "
     private var activeOperation: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,83 +61,108 @@ class MainActivity : AppCompatActivity() {
     }
     fun buttonResult(view: View) {
 
-        if((view is Button) && (prevActiveNumber != "") && (activeOperation != "")){
+        if((view is Button) && (prevActiveNumber != "") && (activeOperation != "") && editTextInput.text.toString() != ""){
 
-            if(editTextInput.text.toString() == "-" )
 
-                showError("Вы не ввели второе число")
-
-            else if (editTextInput.text.toString().startsWith("." ) ||editTextInput.text.toString().startsWith("-." ) )
+            if (editTextInput.text.toString().startsWith("." ) ||editTextInput.text.toString().startsWith("-." ) )
                 showError("Число не может начинаться с точки")
+            else if (editTextInput.text.toString() == "-"){
+
+                showError("Введите второе число")
+            }
+
             else{
                 activeNumber = editTextInput.text.toString()
                 calculate()
-                activeOperation = ""
                 restart()
+                activeOperation = ""
                 operationView.text = ""
+                numberView.text = ""
+                editTextInput.text.append(prevActiveNumber)
             }
 
+        }
+
+        else{
+            if((editTextInput.text.toString() == "" && activeOperation == "") || (editTextInput.text.toString()== "-" && activeOperation == ""))
+            {
+                showError("Нужно ввести первое число")
+            }
+            else if (  activeOperation !=  "" && editTextInput.text.toString() == ""){
+                showError("Введите второе число")
+
+             }
+            else if(activeOperation == "")
+                showError("Нужно ввести операцию")
         }
     }
 
     fun eventButtonNumber(view: View) {
         if(view is Button){
+            if(view.text == "." && (editTextInput.text.toString().isBlank() || editTextInput.text.toString() == "-")){
+                showError("Число не может начинаться с точки")
+                return Unit
+            }
             editTextInput.append(view.text)
         }
     }
-    // Cлушатель нажатия на кнопки операций
     fun eventButtonOperation(view: View) {
         if(view is Button){
 
 
-            if (view.text == "-" && editTextInput.text.toString() == "" && activeOperation== "" ){
-                editTextInput.append("-");
-                return Unit
-            }
-            if(view.text == "-" && editTextInput.text.toString() == "" && activeOperation != ""){
-                editTextInput.append("-");
-                return Unit
-            }
-            checkOper(view.text.toString()) // Проверяем корректность операции
+            checkOper(view.text.toString())
             operationView.text = activeOperation
         }
     }
-    fun returnNumber (view: View){
-        if (view is TextView){
-            if(view.text != "")
-                editTextInput.append(view.text.toString())
-        }
-    }
+
 
     private fun checkOper(textOperation:String) {
-        if (editTextInput.text.toString() == "" && activeOperation == "-"){
-            editTextInput.append(activeOperation)
+
+        if(editTextInput.text.toString() == "" && numberView.text.toString() == "" && textOperation != "-"){
+            showError("Введите число")
             return Unit
-    }
-        
-        if(editTextInput.text.toString() == "" && activeOperation== ""){
-            showError("Введите сначала число")
+        }
+        if(editTextInput.text.toString() == "-" && numberView.text == ""){
+            showError("Введите число")
+            return Unit
+        }
+        if(editTextInput.text.toString() == "" &&numberView.text != "" && operationView.text != "-" && textOperation == "-" ){
+            editTextInput.append(textOperation)
+            return Unit
+        }
+        if(editTextInput.text.toString() == "-" && numberView.text != "" && operationView.text != "-" && textOperation == "-" ){
+            operationView.text = "-"
+            editTextInput.text.clear()
+        }
+        if(editTextInput.text.toString() == "-" && numberView.text != "" && operationView.text != "-" && textOperation != "-" ){
+            editTextInput.text.clear()
+            activeOperation = textOperation
+        }
+        if(editTextInput.text.toString() == "" && numberView.text.toString() == "" && textOperation == "-"){
+            editTextInput.append(textOperation)
             return Unit
         }
         if (editTextInput.text.toString() == ""){
             activeOperation = textOperation
             return Unit
         }
+
         if(activeOperation == ""){
-            if (editTextInput.text.toString().startsWith("." ) ||editTextInput.text.toString().startsWith("-." ) )
-                showError("Число не может начинаться с точки")
-
-            else{
-                prevActiveNumber = editTextInput.text.toString()
-                numberView.text = prevActiveNumber
-                activeOperation = textOperation
-                editTextInput.text.clear()
-            }
-
+            prevActiveNumber = editTextInput.text.toString()
+            numberView.text = prevActiveNumber
+            activeOperation = textOperation
+            editTextInput.text.clear()
         }
+
         else if(prevActiveNumber != ""){
             if (editTextInput.text.toString().startsWith("." ) ||editTextInput.text.toString().startsWith("-." ) )
                 showError("Число не может начинаться с точки")
+            else if(editTextInput.text.toString() == "0" && operationView.text == "/"){
+                editTextInput.text.clear()
+                activeNumber = ""; prevActiveNumber = ""; activeOperation = ""; operationView.text= "";
+                restart()
+                showError("Деление на 0")
+            }
             else{
                 activeNumber = editTextInput.text.toString()
                 calculate()
@@ -169,7 +194,7 @@ class MainActivity : AppCompatActivity() {
             "/" -> {
                 val result = if (activeNumber.toDouble() == 0.0){
                     editTextInput.text.clear()
-                    activeNumber = ""; prevActiveNumber = ""; activeOperation = ""
+                    activeNumber = ""; prevActiveNumber = ""; activeOperation = ""; operationView.text= "";
                     restart()
                     showError("Деление на 0")
                     ""
